@@ -23,7 +23,7 @@ public class UIController : MonoBehaviour
     void Awake()
     {
         if (btnCooperate) btnCooperate.onClick.AddListener(() => Choose(Choice.C));
-        if (btnBetray)    btnBetray.onClick.AddListener(() => Choose(Choice.B));
+        if (btnBetray) btnBetray.onClick.AddListener(() => Choose(Choice.B));
     }
 
     void Choose(Choice c)
@@ -57,11 +57,11 @@ public class UIController : MonoBehaviour
         if (eventTitle) eventTitle.text = ev ? ev.title : "";
     }
 
-    public void UpdateMeters(int score, float trust, float heat, BalanceSO b)
+    public void UpdateMeters(int score, float aiTrust, float heat, BalanceSO b)
     {
         if (scoreSlider) scoreSlider.value = score;
-        if (trustSlider) trustSlider.value = Mathf.Clamp01(trust);
-        if (heatSlider)  heatSlider.value  = Mathf.Clamp(heat, 0, b.heatMax);
+        if (trustSlider) trustSlider.value = Mathf.Clamp01(aiTrust);
+        if (heatSlider) heatSlider.value = Mathf.Clamp(heat, 0, b.heatMax);
     }
 
     public void AppendLog(string s)
@@ -72,8 +72,9 @@ public class UIController : MonoBehaviour
 
     public void ShowOutcome(Choice p, Choice a, RoundResult r)
     {
-        AppendLog($"You: {p} | Partner: {a}  =>  +{r.scoreDelta} / T{r.trustDelta:+0.0;-0.0} / H{r.heatDelta:+0.0;-0.0}");
+        AppendLog($"You: {p} | Partner: {a}  =>  +{r.scoreDelta} / AItrust {r.aiTrustDelta:+0.0;-0.0} / Heat {r.heatDelta:+0.0;-0.0}");
     }
+
 
     public void ShowEnding(string endingId, int score, float trust, float heat)
     {

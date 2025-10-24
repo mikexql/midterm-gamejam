@@ -13,10 +13,10 @@ public class BalanceSO : ScriptableObject
     public float trustDealThreshold = 0.4f;
 
     [Header("Base Payoffs (Score / Trust / Heat)")]
-    public int   ccScore = 2;   public float ccTrust = +0.2f; public float ccHeat = +1f;
-    public int   bcScore = 3;   public float bcTrust = -0.3f; public float bcHeat = -1f;
-    public int   cbScore = 0;   public float cbTrust = -0.4f; public float cbHeat = +1f;
-    public int   bbScore = 1;   public float bbTrust = -0.1f; public float bbHeat = -0.2f;
+    public int   ccScore = 2;   public float ccAiTrust = +0.20f; public float ccHeat = +1f;
+    public int   bcScore = 3;   public float bcAiTrust = -0.40f; public float bcHeat = -1f;
+    public int   cbScore = 0;   public float cbAiTrust = +0.10f; public float cbHeat = +1f;
+    public int   bbScore = 1;   public float bbAiTrust = -0.20f; public float bbHeat = -0.2f;
 
     [Header("Escalation")]
     public int midgameRound = 6;     // start pressure later

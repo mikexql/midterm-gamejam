@@ -8,20 +8,32 @@ public class Resolver : MonoBehaviour
         int coopBonus = e ? e.bonusScoreCoop : 0;
         int betrayBonus = e ? e.bonusScoreBetray : 0;
         float heatMult = e ? e.heatMultiplier : 1f;
-        float tDelta = e ? e.trustDelta : 0f;
+        float trustAdj = e ? e.trustDelta : 0f; // events can sway AI trust too
 
         if (p == Choice.C && a == Choice.C)
-        { rr.scoreDelta = b.ccScore + coopBonus; rr.trustDelta = b.ccTrust + tDelta; rr.heatDelta = b.ccHeat * heatMult; }
-
+        {
+            rr.scoreDelta = b.ccScore + coopBonus;
+            rr.aiTrustDelta = b.ccAiTrust + trustAdj;
+            rr.heatDelta = b.ccHeat * heatMult;
+        }
         if (p == Choice.B && a == Choice.C)
-        { rr.scoreDelta = b.bcScore + betrayBonus; rr.trustDelta = b.bcTrust + tDelta; rr.heatDelta = b.bcHeat * heatMult; }
-
+        {
+            rr.scoreDelta = b.bcScore + betrayBonus;
+            rr.aiTrustDelta = b.bcAiTrust + trustAdj;
+            rr.heatDelta = b.bcHeat * heatMult;
+        }
         if (p == Choice.C && a == Choice.B)
-        { rr.scoreDelta = b.cbScore + coopBonus; rr.trustDelta = b.cbTrust + tDelta; rr.heatDelta = b.cbHeat * heatMult; }
-
+        {
+            rr.scoreDelta = b.cbScore + coopBonus;
+            rr.aiTrustDelta = b.cbAiTrust + trustAdj;
+            rr.heatDelta = b.cbHeat * heatMult;
+        }
         if (p == Choice.B && a == Choice.B)
-        { rr.scoreDelta = b.bbScore + betrayBonus; rr.trustDelta = b.bbTrust + tDelta; rr.heatDelta = b.bbHeat * heatMult; }
-
+        {
+            rr.scoreDelta = b.bbScore + betrayBonus;
+            rr.aiTrustDelta = b.bbAiTrust + trustAdj;
+            rr.heatDelta = b.bbHeat * heatMult;
+        }
         return rr;
     }
 
