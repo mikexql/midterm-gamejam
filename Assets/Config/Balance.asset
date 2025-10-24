@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 747a58152ec510544920333a0fdc0a8a, type: 3}
+  m_Name: Balance
+  m_EditorClassIdentifier: Assembly-CSharp::BalanceSO
+  rounds: 10
+  targetScore: 15
+  heatMax: 10
+  trustBestThreshold: 0.6
+  trustDealThreshold: 0.4
+  ccScore: 2
+  ccTrust: 0.2
+  ccHeat: 1
+  bcScore: 3
+  bcTrust: -0.3
+  bcHeat: -1
+  cbScore: 0
+  cbTrust: -0.4
+  cbHeat: 1
+  bbScore: 1
+  bbTrust: -0.1
+  bbHeat: -0.2
+  midgameRound: 6
+  heatDriftMidLate: 0.5
