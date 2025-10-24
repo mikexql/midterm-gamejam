@@ -9,6 +9,7 @@ public class AIController : MonoBehaviour
     {
         float p = 0.3f;                       // base betray
         if (lastPlayer == Choice.B) p += 0.25f;  // you burned them
+        if (aiTrust > 0.75f) p -= 0.15f;  // high trust = less likely to betray
         if (aiTrust < 0.30f) p += 0.20f;  // they don't trust you
         if (heat > 5f) p += 0.10f;  // outside pressure
         p += ev ? ev.aiBetrayBias : 0f;         // event sway
