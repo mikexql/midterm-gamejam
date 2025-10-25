@@ -91,6 +91,8 @@ public class GameManager : MonoBehaviour
             aiTrust = Mathf.Clamp01(aiTrust + result.aiTrustDelta);
             heat = Mathf.Clamp(heat + result.heatDelta, 0, balance.heatMax);
 
+            yield return ShowRoundSummary(lastPlayer, aiChoice, result);
+
             ui?.ShowOutcome(lastPlayer, aiChoice, result);
             ui?.UpdateMeters(score, aiTrust, heat, balance);
 
@@ -219,4 +221,55 @@ public class GameManager : MonoBehaviour
         dialogueCanvas.enabled = false;
         ui.SetChoiceButtonsActive(true);
     }
+
+    IEnumerator ShowRoundSummary(Choice playerChoice, Choice aiChoice, RoundResult result)
+    {
+        // Disable choice buttons during summary
+        ui.SetChoiceButtonsActive(false);
+
+        // Tell UI to show a small panel with both choices + result deltas
+        ui.ShowRoundSummary(
+            ChoiceLabel(playerChoice),
+            ChoiceLabel(aiChoice),
+            FormatResultDelta(result)
+        );
+
+        // Wait for player acknowledge (click or Space/Enter)
+        yield return WaitForAcknowledge();
+
+        // Hide the summary UI
+        ui.HideRoundSummary();
+
+        // (buttons will be re-enabled later by your normal flow)
+    }
+
+    IEnumerator WaitForAcknowledge()
+    {
+        // small debounce so an earlier click doesn't instantly skip
+        yield return null;
+
+        while (true)
+        {
+            if (Input.GetMouseButtonDown(0)) break;
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)) break;
+            yield return null;
+        }
+
+        // optional small delay to avoid accidental double-skip
+        yield return null;
+    }
+
+    // Tiny format helpers
+    string ChoiceLabel(Choice c) => c == Choice.C ? "COOPERATE" :
+                                   c == Choice.B ? "BETRAY" : "—";
+
+    string FormatResultDelta(RoundResult r)
+    {
+        // Customize wording if you like
+        string sc = r.scoreDelta >= 0 ? $"+{r.scoreDelta}" : r.scoreDelta.ToString();
+        string tr = r.aiTrustDelta >= 0 ? $"+{r.aiTrustDelta:0.0}" : $"{r.aiTrustDelta:0.0}";
+        string ht = r.heatDelta >= 0 ? $"+{r.heatDelta:0.0}" : $"{r.heatDelta:0.0}";
+        return $"Score {sc}   |   AI Trust {tr}   |   Heat {ht}";
+    }
+
 }

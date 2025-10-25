@@ -18,6 +18,13 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI roundLabel;
     public TextMeshProUGUI eventTitle;
     public TextMeshProUGUI logText;
+    public GameObject roundSummaryRoot;                 // panel root
+
+    [Header("Choices")]
+    public TMPro.TextMeshProUGUI playerChoiceText;
+    public TMPro.TextMeshProUGUI aiChoiceText;
+    public TMPro.TextMeshProUGUI outcomeText;
+
 
     Action<Choice> _choiceCallback;
 
@@ -85,5 +92,18 @@ public class UIController : MonoBehaviour
     public void SetChoiceButtonsActive(bool state)
     {
         btnGroup.SetActive(state);
+    }
+
+    public void ShowRoundSummary(string playerChoice, string aiChoice, string outcome)
+    {
+        if (roundSummaryRoot) roundSummaryRoot.SetActive(true);
+        if (playerChoiceText) playerChoiceText.text = $"YOU: {playerChoice}";
+        if (aiChoiceText) aiChoiceText.text = $"PARTNER: {aiChoice}";
+        if (outcomeText) outcomeText.text = outcome;
+    }
+
+    public void HideRoundSummary()
+    {
+        if (roundSummaryRoot) roundSummaryRoot.SetActive(false);
     }
 }
