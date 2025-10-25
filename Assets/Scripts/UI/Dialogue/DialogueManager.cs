@@ -22,10 +22,15 @@ public class DialogueManager : MonoBehaviour
     public AudioSource blipSource;           // optional: tiny “pip”
     public AudioClip blipClip;               // assign a very short clip
     public bool blipOnlyOnLetters = true;    // play blip only for letters/digits
-    
+
     private int index;
     private bool isTyping;
     private Coroutine typingRoutine;
+
+    private string currentTypedLine = string.Empty;
+    private string currentPrefix = string.Empty;   // e.g., "Detective: "
+    public bool IsPlaying => gameObject.activeSelf;
+    public Action<string> OnLineSpeaker; // subscribe from GameManager/Highlighter
 
     void Start()
     {
@@ -65,8 +70,6 @@ public class DialogueManager : MonoBehaviour
         StartTypingCurrentLine();
     }
 
-    public bool IsPlaying => gameObject.activeSelf;
-
     public void ShowDialogue(string[] newLines)
     {
         lines = newLines;
@@ -75,6 +78,18 @@ public class DialogueManager : MonoBehaviour
         StartDialogue();
     }
 
+    string ExtractSpeaker(ref string line)
+    {
+        // Expect "Name: text"; returns "Name" and removes the "Name: " prefix.
+        int colon = line.IndexOf(':');
+        if (colon > 0)
+        {
+            string sp = line.Substring(0, colon).Trim();
+            line = line.Substring(colon + 1).TrimStart();
+            return sp;
+        }
+        return string.Empty;
+    }
 
     void NextLine()
     {
@@ -97,6 +112,13 @@ public class DialogueManager : MonoBehaviour
         isTyping = true;
         if (continueIcon) continueIcon.SetActive(false);
 
+        string raw = lines[index];
+        string speaker = ExtractSpeaker(ref raw); // removes "Name: "
+        currentTypedLine = raw;                   // stripped content to type
+        currentPrefix = string.IsNullOrEmpty(speaker) ? "" : (speaker + ": ");
+        if (!string.IsNullOrEmpty(speaker))
+            OnLineSpeaker?.Invoke(speaker);             // 🔔 notify portraits
+
         dialogueText.text = string.Empty;
         typingRoutine = StartCoroutine(TypeLine(lines[index]));
     }
@@ -108,7 +130,7 @@ public class DialogueManager : MonoBehaviour
         isTyping = false;
 
         // Instantly reveal the full line
-        dialogueText.text = lines[index];
+        dialogueText.text = currentPrefix + currentTypedLine;
         if (continueIcon) continueIcon.SetActive(true);
     }
 
@@ -127,8 +149,8 @@ public class DialogueManager : MonoBehaviour
 
             // Base delay + punctuation pause
             float delay = typingSpeed;
-            if (punctuationChars.IndexOf(c) >= 0)
-                delay += punctuationPause;
+            if (punctuationChars.IndexOf(c) >= 0) delay += punctuationPause;
+            yield return new WaitForSeconds(delay);
 
             yield return new WaitForSeconds(delay);
         }

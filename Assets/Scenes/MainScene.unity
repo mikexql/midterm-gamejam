@@ -457,6 +457,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 162876271}
   m_CullTransparentMesh: 1
+--- !u!212 &179804574 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3509179715520175563, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+  m_PrefabInstance: {fileID: 471364391}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &198104964 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8653719598885068355, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
@@ -625,7 +630,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 402296093}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -992,8 +997,16 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -7927242532061369294, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+      propertyPath: m_Name
+      value: HeadBone
+      objectReference: {fileID: 0}
+    - target: {fileID: -7927242532061369294, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -7595413430563298066, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+      propertyPath: m_Name
+      value: Eyes
       objectReference: {fileID: 0}
     - target: {fileID: -7595413430563298066, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
       propertyPath: m_Layer
@@ -1056,6 +1069,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -6900818959896083359, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+      propertyPath: m_Name
+      value: Body
+      objectReference: {fileID: 0}
+    - target: {fileID: -6900818959896083359, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
@@ -1064,8 +1081,16 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 558580837604631819, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+      propertyPath: m_Name
+      value: Head
+      objectReference: {fileID: 0}
+    - target: {fileID: 558580837604631819, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998548643260058253, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+      propertyPath: m_Name
+      value: Mouth
       objectReference: {fileID: 0}
     - target: {fileID: 3998548643260058253, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
       propertyPath: m_Layer
@@ -1074,6 +1099,10 @@ PrefabInstance:
     - target: {fileID: 5638863962959275187, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8727091967253889458, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+      propertyPath: m_Name
+      value: BodyBone
       objectReference: {fileID: 0}
     - target: {fileID: 8727091967253889458, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
       propertyPath: m_Layer
@@ -1685,6 +1714,7 @@ MonoBehaviour:
   ui: {fileID: 838278050}
   dialogueManager: {fileID: 2052977685}
   dialogueCanvas: {fileID: 2052977683}
+  portraitHighlighter: {fileID: 1175787656}
 --- !u!4 &838278055
 Transform:
   m_ObjectHideFlags: 0
@@ -2062,6 +2092,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1118199701}
   m_CullTransparentMesh: 1
+--- !u!1 &1175787655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1175787657}
+  - component: {fileID: 1175787656}
+  m_Layer: 0
+  m_Name: Highlighter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1175787656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175787655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f973fe9185c37e43b84fc0f0b4189fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PortraitHighlighterSprites
+  slots:
+  - speaker: Detective
+    sprites:
+    - {fileID: 538411554}
+  - speaker: Mafia
+    sprites:
+    - {fileID: 1627517721}
+    - {fileID: 1245583995}
+    - {fileID: 1339286330}
+    - {fileID: 179804574}
+  activeTint: {r: 1, g: 1, b: 1, a: 1}
+  inactiveTint: {r: 0.35, g: 0.35, b: 0.45, a: 1}
+  fadeTime: 0.12
+--- !u!4 &1175787657
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175787655}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1645, y: -0.57909, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1184740923
 GameObject:
   m_ObjectHideFlags: 0
@@ -2198,6 +2285,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1184740923}
   m_CullTransparentMesh: 1
+--- !u!212 &1245583995 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5638863962959275187, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+  m_PrefabInstance: {fileID: 471364391}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1339286330 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: -4691381383639723871, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+  m_PrefabInstance: {fileID: 471364391}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1445786218
 GameObject:
   m_ObjectHideFlags: 0
@@ -2409,6 +2506,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1461581536}
   m_CullTransparentMesh: 1
+--- !u!212 &1627517721 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 683650805199822136, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+  m_PrefabInstance: {fileID: 471364391}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1641819262 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7001855703466175877, guid: 93867d004bb52ce4588d8702d2c3b546, type: 3}
@@ -2596,9 +2698,9 @@ MonoBehaviour:
   dialogueText: {fileID: 464867578}
   continueIcon: {fileID: 1461581536}
   lines: []
-  typingSpeed: 0.1
-  punctuationPause: 0.06
-  punctuationChars: '.,!?;:'
+  typingSpeed: 0.02
+  punctuationPause: 0.05
+  punctuationChars: .,!?;
   blipSource: {fileID: 0}
   blipClip: {fileID: 0}
   blipOnlyOnLetters: 1
@@ -2932,3 +3034,4 @@ SceneRoots:
   - {fileID: 861270610}
   - {fileID: 2052977684}
   - {fileID: 421814613}
+  - {fileID: 1175787657}

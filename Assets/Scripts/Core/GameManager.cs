@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public DialogueManager dialogueManager;
     public Canvas dialogueCanvas;
 
+    public PortraitHighlighter portraitHighlighter;
+
 
     // State
     int round, score;
@@ -40,6 +42,8 @@ public class GameManager : MonoBehaviour
 
         if (dialogueManager && dialogueCanvas)
         {
+            dialogueManager.OnLineSpeaker += portraitHighlighter.SetActiveSpeaker;
+            portraitHighlighter.SetAllActive();
             string[] tutorial = {
                 "Detective: Alright, listen up. Two of you in this room: the mobster, and the messenger.",
                 "Detective: One of you talks, the other walks. Both stay quiet? You might both walk free... or rot together.",
@@ -208,6 +212,8 @@ public class GameManager : MonoBehaviour
         // Wait for dialogue to finish
         while (dialogueManager.gameObject.activeSelf)
             yield return null;
+
+        if (portraitHighlighter) portraitHighlighter.SetAllActive();
 
         // Disable canvas
         dialogueCanvas.enabled = false;
