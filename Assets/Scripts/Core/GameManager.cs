@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -45,13 +46,14 @@ public class GameManager : MonoBehaviour
             dialogueManager.OnLineSpeaker += portraitHighlighter.SetActiveSpeaker;
             portraitHighlighter.SetAllActive();
             string[] tutorial = {
-                "Detective: Alright, listen up. Two of you in this room: the mobster, and the messenger.",
-                "Detective: One of you talks, the other walks. Both stay quiet? You might both walk free... or rot together.",
+                "Detective: Took us long enough to get here. Let's make this quick.",
+                "Detective: The first one to talk gets a deal. I'm not here to play any games, if I don't get what I want, you're both going to the slammer.",
                 "Mafia: Don't let him play you. No one talks and he can't do anything to us.",
                 "Detective: We'll see about that. My patience has limits.",
-                "*TRUST - the thin wire between you and your mafia buddy. Cut it, and you're on your own.*",
-                "*HEAT - the cop's patience is wearing thin. The longer the both of you stall, the closer he gets to tossing you both in a cell.*",
+                "*TRUST - the thin wire between you and your mafia buddy. The lower it is, the more likely you are to be betrayed.*",
+                "*HEAT - the cop's patience is wearing thin. The longer the both of you stay silent, the closer he gets to tossing you both in a cell.*",
                 "*SCORE - the ticket out. Say just enough, and you can get out of this situation.*",
+                "Each round, choose to *COOPERATE* (stay silent) or *BETRAY* (talk). Each choice affects your TRUST, HEAT, and SCORE.",
                 "Detective: Now, start talking-I don't have all day."
             };
             yield return ShowDialogueSequence(tutorial);
@@ -174,30 +176,30 @@ public class GameManager : MonoBehaviour
     {
         if (id == endings.loyalEscapeId)
             return new[] {
-                "Detective: You kept your word.",
-                "You: Honor still breathes.",
+                "Detective: Alright, maybe you weren't the bad guy after all.",
+                "You: Took you long enough to see it.",
                 "ENDING: LOYAL ESCAPE"
             };
 
         if (id == endings.dealId)
             return new[] {
-                "Detective: You win. Alone.",
-                "You: Someone had to.",
-                "ENDING: DEAL"
+                "Detective: Hmm, a deal's a deal, the feds will keep you breathing, new name, new city.",
+                "You: Nothing personal.",
+                "ENDING: WITNESS DEAL"
             };
 
         if (id == endings.heatBreakId)
             return new[] {
-                "Detective: Sirens. Doors. It's over.",
-                "You: We ran too hot.",
+                "Detective: Looks like I'm not getting anything from you two. We'll see if some time behind bars will change that.",
+                "You: Dammit!",
                 "ENDING: HEAT BREAK"
             };
 
         // Default / sacrifice
         return new[] {
-            "Detective: They'll take one of us.",
-            "You: Let it be me.",
-            "ENDING: SACRIFICE HONOR"
+            "Mafia: Someone's gotta take the fall.",
+            "You: Then let it be me.",
+            "ENDING: SACRIFICE"
         };
     }
 
@@ -265,11 +267,30 @@ public class GameManager : MonoBehaviour
 
     string FormatResultDelta(RoundResult r)
     {
-        // Customize wording if you like
-        string sc = r.scoreDelta >= 0 ? $"+{r.scoreDelta}" : r.scoreDelta.ToString();
-        string tr = r.aiTrustDelta >= 0 ? $"+{r.aiTrustDelta:0.0}" : $"{r.aiTrustDelta:0.0}";
-        string ht = r.heatDelta >= 0 ? $"+{r.heatDelta:0.0}" : $"{r.heatDelta:0.0}";
-        return $"Score {sc}   |   AI Trust {tr}   |   Heat {ht}";
-    }
+        string scoreStr = TrendSymbols(r.scoreDelta, "Score");
+        string heatStr = TrendSymbols(r.heatDelta, "Heat");
+        string trustStr = TrendSymbols(r.aiTrustDelta, "Trust");
 
+        // Only include ones that changed
+        List<string> parts = new List<string>();
+        if (!string.IsNullOrEmpty(scoreStr)) parts.Add(scoreStr);
+        if (!string.IsNullOrEmpty(heatStr)) parts.Add(heatStr);
+        if (!string.IsNullOrEmpty(trustStr)) parts.Add(trustStr);
+
+        return string.Join("    ", parts);
+    }
+    string TrendSymbols(float delta, string label)
+    {
+        if (Mathf.Abs(delta) < 0.001f) return ""; // no visible change
+
+        // Map magnitude to 1–3 symbols for effect
+        int symbols = Mathf.Clamp(Mathf.CeilToInt(Mathf.Abs(delta) * 3f), 1, 3);
+        string sign = delta > 0 ? "+" : "-";
+        string text = new string(sign[0], symbols);
+
+        // TMP color tags (green for +, red for -)
+        string color = delta > 0 ? "#00FF66" : "#FF4444";
+
+        return $"<color={color}>{label} {text}</color>";
+    }
 }

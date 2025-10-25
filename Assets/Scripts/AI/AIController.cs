@@ -3,7 +3,6 @@ using UnityEngine;
 public class AIController : MonoBehaviour
 {
     int consecBetray = 0;
-    Choice lastPlayerPrev = Choice.None;
 
     public Choice Decide(Choice lastPlayer, float aiTrust, float heat, EventSO ev)
     {
