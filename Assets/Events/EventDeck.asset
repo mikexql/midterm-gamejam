@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 964273021552a5941bdfbfcdd039577c, type: 3}
   m_Name: EventDeck
   m_EditorClassIdentifier: Assembly-CSharp::EventDeck
-  pool:
-  - {fileID: 11400000, guid: 07514e9a0bddddf44853c22555bfcb3b, type: 2}
+  pool: []
   byRoundWeight:
     serializedVersion: 2
     m_Curve:

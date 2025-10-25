@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour
     public Button btnCooperate;
     public Button btnBetray;
     public GameObject btnGroup;
+    public GameObject mainMenuButton;
 
     [Header("Meters")]
     public Slider scoreSlider;    // or TMP text if you prefer numbers
@@ -92,6 +93,12 @@ public class UIController : MonoBehaviour
     public void SetChoiceButtonsActive(bool state)
     {
         btnGroup.SetActive(state);
+    }
+
+    public void SetMainMenuButtonActive(bool show)
+    {
+        if (mainMenuButton)
+            mainMenuButton.SetActive(show);
     }
 
     public void ShowRoundSummary(string playerChoice, string aiChoice, string outcome)

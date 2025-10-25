@@ -1,13 +1,13 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/N5tu08Ko)
 # **Game Title**
 
-_(Enter your game's title here.)_
+## Code of Silence
 _(Add some screenshots here showcasing your game)_
 
 ## **How to Run**
 
-- System requirements: Operating System, controls, etc
-- Unity Version: X.Y.Z
+- System requirements: Windows, Mouse-only
+- Unity Version: 6000.2.6f2
 - **Executable file** of the game to download _(Ensure it is playable without extra setup.)_
 
 ### Gameplay Recording
@@ -16,7 +16,7 @@ You should provide a link to your **Full gameplay recording** showing mechanics,
 
 ## Chosen Theme
 
-_(State your **chosen theme** clearly here. This will affect how we grade your work)_
+Honor Died on the Beach
 
 ## Game Description
 
@@ -25,6 +25,7 @@ _(Briefly describe your game’s premise, setting, and goal. What is the game ab
 ## **Core Mechanic**
 
 _(What is the core mechanic? Use the core mechanics described in class. Then you can describe the main action players perform repeatedly that drives gameplay. Example: "Jumping between platforms to avoid obstacles" or "Controlling a spaceship to dodge and shoot enemies.")_
+Strategy
 
 ## **Game Procedure & Controls**
 

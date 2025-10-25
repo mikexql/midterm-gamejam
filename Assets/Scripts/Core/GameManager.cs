@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     float aiTrust = 0.5f;   // 0..1, AI's trust in YOU
     float heat = 0f;
     Choice lastPlayer = Choice.None;
+    bool allRoundsCooperated = true;
 
     IEnumerator Start()
     {
@@ -84,6 +85,9 @@ public class GameManager : MonoBehaviour
             // Wait for player choice
             yield return ui.WaitForChoice(c => lastPlayer = c);
 
+            if (lastPlayer != Choice.C)
+                allRoundsCooperated = false;
+
             // AI decides
             var aiChoice = ai ? ai.Decide(lastPlayer, aiTrust, heat, ev) : Choice.C;
 
@@ -111,16 +115,44 @@ public class GameManager : MonoBehaviour
         }
 
         // Ending
+        bool secretOK = allRoundsCooperated && round > balance.rounds;
+
+        if (secretOK)
+        {
+            // Secret sacrifice ending
+            ui?.ShowEnding("TAKE_THE_FALL", score, aiTrust, heat);
+
+            if (dialogueManager && dialogueCanvas)
+            {
+                string[] endLines = {
+            "Detective: So, you're really gonna take the fall for him?",
+            "You: ...",
+            "Detective: (chuckles) Loyalty-funny thing. It's what buries men like you.",
+            "You: But our family will continue to thrive. A pity that you won't get what you want.",
+            "Mafia: You did right by the family. We'll handle things from here. Out there, the world keeps turning, but I'll make sure to keep your story straight.",
+            "You: Make it count. Anything for the family.",
+            "ENDING: TAKE THE FALL"
+                };
+                yield return ShowDialogueSequence(endLines);
+            }
+            ui?.SetChoiceButtonsActive(false);
+            ui?.SetMainMenuButtonActive(true);
+            yield break; // stop normal ending flow
+        }
+
         var endingId = resolver.DecideEnding(score, aiTrust, heat, balance, endings);
         ui?.ShowEnding(endingId, score, aiTrust, heat);
 
         // --- NEW: Ending dialogue ---
+
         if (dialogueManager && dialogueCanvas)
         {
             string[] endLines = BuildEndingLines(endingId);
             if (endLines != null && endLines.Length > 0)
                 yield return ShowDialogueSequence(endLines);
         }
+        ui?.SetChoiceButtonsActive(false);
+        ui?.SetMainMenuButtonActive(true);
     }
 
     string[] BuildReactionLines(Choice player, Choice aiChoice, float trust, float h)
@@ -197,8 +229,8 @@ public class GameManager : MonoBehaviour
 
         // Default / sacrifice
         return new[] {
-            "Mafia: Someone's gotta take the fall.",
-            "You: Then let it be me.",
+            "Detective: Looks like I won't be getting anything else from you two. We'll see if some time behind bars will change that.",
+            "You: Dammit!",
             "ENDING: SACRIFICE"
         };
     }
