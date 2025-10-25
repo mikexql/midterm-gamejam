@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
     [Header("Buttons")]
     public Button btnCooperate;
     public Button btnBetray;
+    public GameObject btnGroup;
 
     [Header("Meters")]
     public Slider scoreSlider;    // or TMP text if you prefer numbers
@@ -79,5 +80,10 @@ public class UIController : MonoBehaviour
     public void ShowEnding(string endingId, int score, float trust, float heat)
     {
         AppendLog($"\n== END: {endingId} ==\nScore {score}  Trust {trust:0.00}  Heat {heat:0.0}");
+    }
+
+    public void SetChoiceButtonsActive(bool state)
+    {
+        btnGroup.SetActive(state);
     }
 }

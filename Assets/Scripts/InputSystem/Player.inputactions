@@ -1,0 +1,63 @@
+{
+    "version": 1,
+    "name": "Player",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "5b0e5492-a2ba-4da0-8f5f-c9f8f72bce97",
+            "actions": [
+                {
+                    "name": "Dialogue",
+                    "type": "Button",
+                    "id": "e5f0d7eb-3faa-495f-b978-a7447b608bc5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fe98a49e-93f9-412f-a778-96435684dd25",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";MnK",
+                    "action": "Dialogue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b2635cfc-e872-41aa-add2-75fbfde82153",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";MnK",
+                    "action": "Dialogue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "MnK",
+            "bindingGroup": "MnK",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
