@@ -83,10 +83,12 @@ Therefore, the player needs to adopt a mixed strategy by playing both `Betrayal`
 
 _(What unique rule did you introduce? Did you apply an elegant rule, break a conventional rule, or create asymmetry? Describe how this rule impacts gameplay and how it aligns with the rubric.)_
 
-Example:
+Asymmetry through the Trust Mechanic
 
-- **Breaking a Rule**: In a platformer, players cannot jump but must rely on environment-based movement.
-- **Asymmetry**: The player controls two characters with different abilities, requiring strategic switching.
+Unlike a standard Prisoner’s Dilemma, where both sides make independent decisions under identical rules, Code of Silence introduces an asymmetric trust system.
+The player’s past choices dynamically shape the AI’s future decisions through a visible Trust meter, creating a feedback loop where betrayal and cooperation have consequences beyond a single round.
+
+This rule breaks the usual “static” logic of the classic Prisoner’s Dilemma by embedding emotional and probabilistic memory into the system, making every decision a meaningful trade-off between survival and honor
 
 ## **Game Design Principles Incorporated**
 
