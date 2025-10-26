@@ -28,6 +28,6 @@ MonoBehaviour:
   bbAiTrust: -0.2
   bbHeat: 0
   aiBaseBetray: 0.5
-  aiTrustWeight: 0.3
-  aiHeatWeight: 0.2
+  aiTrustWeight: 0.4
+  aiHeatWeight: 0
   heatBetrayStartingPoint: 0.5
