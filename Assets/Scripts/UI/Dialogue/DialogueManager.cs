@@ -26,6 +26,7 @@ public class DialogueManager : MonoBehaviour
     private string currentPrefix = string.Empty;
     public bool IsPlaying => gameObject.activeSelf;
     public Action<string> OnLineSpeaker;
+    public PortraitSpeaker mafiaPortrait;
 
     void Start()
     {
@@ -107,13 +108,15 @@ public class DialogueManager : MonoBehaviour
 
         string raw = lines[index];
         string speaker = ExtractSpeaker(ref raw);
+        if (speaker == "Mafia" && mafiaPortrait)
+        mafiaPortrait.SetTalking(true);
         currentTypedLine = raw;
         currentPrefix = string.IsNullOrEmpty(speaker) ? "" : (speaker + ": ");
         if (!string.IsNullOrEmpty(speaker))
             OnLineSpeaker?.Invoke(speaker);
 
         dialogueText.text = string.Empty;
-        typingRoutine = StartCoroutine(TypeLine(lines[index]));
+        typingRoutine = StartCoroutine(TypeLine(lines[index], speaker));
     }
 
     void SkipTyping()
@@ -122,10 +125,11 @@ public class DialogueManager : MonoBehaviour
         if (typingRoutine != null) StopCoroutine(typingRoutine);
         isTyping = false;
         dialogueText.text = currentPrefix + currentTypedLine;
+        if (mafiaPortrait) mafiaPortrait.SetTalking(false);
         if (continueIcon) continueIcon.SetActive(true);
     }
 
-    IEnumerator TypeLine(string line)
+    IEnumerator TypeLine(string line, string speaker)
     {
         foreach (char c in line)
         {
@@ -137,6 +141,8 @@ public class DialogueManager : MonoBehaviour
 
             yield return new WaitForSeconds(delay);
         }
+
+        if (mafiaPortrait) mafiaPortrait.SetTalking(false);
 
         isTyping = false;
         if (continueIcon) continueIcon.SetActive(true);

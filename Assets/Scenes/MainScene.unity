@@ -476,6 +476,19 @@ MonoBehaviour:
   animator: {fileID: 198104965}
   minDelay: 4
   maxDelay: 10
+--- !u!114 &198104969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198104964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f104c915b008cf04881f6c1530a7f738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PortraitSpeaker
+  animator: {fileID: 198104965}
 --- !u!1 &237173312
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,6 +1339,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 198104967}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 198104969}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 93f8e0b1cf9e5364bb09d0aa4ae2f243, type: 3}
 --- !u!1 &519420028
 GameObject:
@@ -3646,6 +3662,7 @@ MonoBehaviour:
   typingSpeed: 0.02
   punctuationPause: 0.05
   punctuationChars: .,!?;
+  mafiaPortrait: {fileID: 198104969}
 --- !u!1001 &2110450822
 PrefabInstance:
   m_ObjectHideFlags: 0
