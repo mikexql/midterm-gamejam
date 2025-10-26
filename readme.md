@@ -10,11 +10,13 @@
 
 - System requirements: Windows 64-bit, Mouse and Keyboard Controls
 - Unity Version: 6000.2.6f2
-- [**Executable file** of the game to download](https://github.com/50033-game-design-and-development/midterm-game-jam-2025-fall-mikexql/releases/tag/Game)
+- [**Executable file** of the game to download](https://github.com/50033-game-design-and-development/midterm-game-jam-2025-fall-mikexql/releases/tag/v1.0.1)
 
 ### Gameplay Recording
 
-https://youtu.be/Q7ybpZccwC0
+https://youtu.be/sYayIp7s4qs
+
+Blinking and Talking (Mafia only) Portraits
 
 ## Chosen Theme
 
