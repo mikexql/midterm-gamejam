@@ -3668,7 +3668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 465167343503027675, guid: 93867d004bb52ce4588d8702d2c3b546, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 719431771030617098, guid: 93867d004bb52ce4588d8702d2c3b546, type: 3}
       propertyPath: m_LocalScale.x
@@ -3721,6 +3721,10 @@ PrefabInstance:
     - target: {fileID: 5756466215354127673, guid: 93867d004bb52ce4588d8702d2c3b546, type: 3}
       propertyPath: m_Name
       value: Heat
+      objectReference: {fileID: 0}
+    - target: {fileID: 5756466215354127673, guid: 93867d004bb52ce4588d8702d2c3b546, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7001855703466175877, guid: 93867d004bb52ce4588d8702d2c3b546, type: 3}
       propertyPath: m_Pivot.x

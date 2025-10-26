@@ -9,9 +9,10 @@ public class BalanceSO : ScriptableObject
 
     [Header("Meters")]
     public float heatMax = 10f;
-    [Header("Ending Config")]
-    [Range(0f, 1f)]public float trustBestThreshold = 0.6f;
-    [Tooltip("Numbers affect how easy it is to reach certain endings")]
+
+    // [Header("Ending Config")]
+    // [Range(0f, 1f)]public float trustBestThreshold = 0.6f;
+    // [Tooltip("Numbers affect how easy it is to reach certain endings")]
 
     [Header("Base Payoffs (Score / Trust / Heat)")]
     public int ccScore = 2; public float ccAiTrust = +0.20f; public float ccHeat = +1f;

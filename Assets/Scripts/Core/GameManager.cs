@@ -53,9 +53,9 @@ public class GameManager : MonoBehaviour
                 "Mafia: Don't let him play you. No one talks and he can't do anything to us. Remember the family.",
                 "Detective: We'll see about that. I'm sure one of you will crack sooner or later.",
                 "*TRUST - the relationship between you and your mafia buddy. The lower it is, the more likely you are to be betrayed.*",
-                "*HEAT - the detective's patience is wearing thin. The longer the both of you stay silent, the closer he gets to just ending this and tossing the both of you in solitary.*",
-                "*SCORE - the ticket out. Say just enough, and you can reduce your sentence to zero.*",
-                "Each round, choose to *COOPERATE* (stay silent) or *BETRAY* (talk). Each choice affects your TRUST, HEAT, and SCORE.",
+                //"*HEAT - the detective's patience is wearing thin. The longer the both of you stay silent, the closer he gets to just ending this and tossing the both of you in solitary.*",
+                "*SCORE - the ticket out. You need to say just enough to reduce your sentence to zero.*",
+                "Each round, choose to *COOPERATE* (stay silent) or *BETRAY* (talk). Each choice affects your TRUST and SCORE.",
                 "Detective: Now, you both better start talking - I don't have all day."
             };
             yield return ShowDialogueSequence(tutorial);
@@ -284,7 +284,7 @@ public class GameManager : MonoBehaviour
     {
         if (Mathf.Abs(delta) < 0.001f) return "";
 
-        int symbols = Mathf.Clamp(Mathf.CeilToInt(Mathf.Abs(delta) * 3f), 1, 3);
+        int symbols = Mathf.Clamp(Mathf.CeilToInt(Mathf.Abs(delta)), 1, 3);
         string sign = delta > 0 ? "+" : "-";
         string text = new string(sign[0], symbols);
         string color = delta > 0 ? "#00FF66" : "#FF4444";

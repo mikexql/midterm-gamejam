@@ -13,22 +13,21 @@ MonoBehaviour:
   m_Name: Balance
   m_EditorClassIdentifier: Assembly-CSharp::BalanceSO
   roundsPlayed: 10
-  targetScoreToEscape: 10
+  targetScoreToEscape: 20
   heatMax: 10
-  trustBestThreshold: 0.6
-  ccScore: 1
-  ccAiTrust: 0.2
-  ccHeat: 1
-  bcScore: 2
+  ccScore: 2
+  ccAiTrust: 0.1
+  ccHeat: 0
+  bcScore: 3
   bcAiTrust: -0.2
-  bcHeat: -1
-  cbScore: -1
+  bcHeat: 0
+  cbScore: 0
   cbAiTrust: 0.2
-  cbHeat: -1
-  bbScore: 0
+  cbHeat: 0
+  bbScore: 1
   bbAiTrust: -0.2
   bbHeat: 0
-  aiBaseBetray: 0.4
+  aiBaseBetray: 0.5
   aiTrustWeight: 0.3
   aiHeatWeight: 0.2
   heatBetrayStartingPoint: 0.5
