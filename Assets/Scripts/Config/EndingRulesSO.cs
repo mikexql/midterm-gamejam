@@ -4,7 +4,7 @@ using UnityEngine;
 public class EndingRulesSO : ScriptableObject
 {
     public string loyalEscapeId = "LOYAL_ESCAPE";
-    public string dealId        = "DEAL";
+    public string dealId        = "WITNESS_DEAL";
     public string heatBreakId   = "HEAT_BREAK";
-    public string doomId        = "MUTUAL_DOOM";
+    public string doomId        = "FAILED_ESCAPE";
 }

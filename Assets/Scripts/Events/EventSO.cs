@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum EventTag { None, DetectiveDeal, Brotherhood, Lawyer, FakeEvidence, PowerOutage, Guilt }
+public enum EventTag { None, Brotherhood, Lawyer, FakeEvidence, PowerOutage}
 
 [CreateAssetMenu(menuName = "CodeOfSilence/Event")]
 public class EventSO : ScriptableObject
@@ -13,7 +13,7 @@ public class EventSO : ScriptableObject
     public int bonusScoreCoop = 0;
     public int bonusScoreBetray = 0;
     public float trustDelta = 0f;
-    public float heatMultiplier = 1f;      // multiply heat deltas from resolver
-    public float aiBetrayBias = 0f;        // +/- probability added in AI
-    public bool delayReveal = false;       // suspense only
+    public float heatMultiplier = 1f;
+    public float aiBetrayBias = 0f;
+    public bool delayReveal = false;
 }

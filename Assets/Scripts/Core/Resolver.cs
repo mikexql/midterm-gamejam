@@ -8,7 +8,7 @@ public class Resolver : MonoBehaviour
         int coopBonus = e ? e.bonusScoreCoop : 0;
         int betrayBonus = e ? e.bonusScoreBetray : 0;
         float heatMult = e ? e.heatMultiplier : 1f;
-        float trustAdj = e ? e.trustDelta : 0f; // events can sway AI trust too
+        float trustAdj = e ? e.trustDelta : 0f;
 
         if (p == Choice.C && a == Choice.C)
         {
@@ -40,8 +40,9 @@ public class Resolver : MonoBehaviour
     public string DecideEnding(int score, float trust, float heat, BalanceSO b, EndingRulesSO e)
     {
         if (heat >= b.heatMax) return e.heatBreakId;
-        if (score >= b.targetScore && trust >= b.trustBestThreshold) return e.loyalEscapeId;
-        if (score >= b.targetScore && trust <= b.trustDealThreshold) return e.dealId;
+        if (score >= b.targetScoreToEscape) return e.dealId;
+        //if (score >= b.targetScoreToEscape && trust >= b.trustBestThreshold) return e.loyalEscapeId;
+        //if (score >= b.targetScoreToEscape && trust < b.trustBestThreshold) return e.dealId;
         return e.doomId;
     }
 }

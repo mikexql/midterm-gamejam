@@ -7,7 +7,7 @@ public class DialogueManager : MonoBehaviour
 {
     [Header("UI")]
     public TextMeshProUGUI dialogueText;
-    public GameObject continueIcon;          // set inactive by default
+    public GameObject continueIcon;
 
     [Header("Typing")]
     public string[] lines;
@@ -18,19 +18,14 @@ public class DialogueManager : MonoBehaviour
     [Tooltip("Characters that trigger an extra pause.")]
     public string punctuationChars = ".,!?;:";
 
-    [Header("Audio (blip only)")]
-    public AudioSource blipSource;           // optional: tiny “pip”
-    public AudioClip blipClip;               // assign a very short clip
-    public bool blipOnlyOnLetters = true;    // play blip only for letters/digits
-
     private int index;
     private bool isTyping;
     private Coroutine typingRoutine;
 
     private string currentTypedLine = string.Empty;
-    private string currentPrefix = string.Empty;   // e.g., "Detective: "
+    private string currentPrefix = string.Empty;
     public bool IsPlaying => gameObject.activeSelf;
-    public Action<string> OnLineSpeaker; // subscribe from GameManager/Highlighter
+    public Action<string> OnLineSpeaker;
 
     void Start()
     {
@@ -41,11 +36,10 @@ public class DialogueManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
         {
             if (lines == null || lines.Length == 0) return;
 
-            // If currently typing, finish instantly; else advance
             if (isTyping)
             {
                 SkipTyping();
@@ -80,7 +74,6 @@ public class DialogueManager : MonoBehaviour
 
     string ExtractSpeaker(ref string line)
     {
-        // Expect "Name: text"; returns "Name" and removes the "Name: " prefix.
         int colon = line.IndexOf(':');
         if (colon > 0)
         {
@@ -113,11 +106,11 @@ public class DialogueManager : MonoBehaviour
         if (continueIcon) continueIcon.SetActive(false);
 
         string raw = lines[index];
-        string speaker = ExtractSpeaker(ref raw); // removes "Name: "
-        currentTypedLine = raw;                   // stripped content to type
+        string speaker = ExtractSpeaker(ref raw);
+        currentTypedLine = raw;
         currentPrefix = string.IsNullOrEmpty(speaker) ? "" : (speaker + ": ");
         if (!string.IsNullOrEmpty(speaker))
-            OnLineSpeaker?.Invoke(speaker);             // 🔔 notify portraits
+            OnLineSpeaker?.Invoke(speaker);
 
         dialogueText.text = string.Empty;
         typingRoutine = StartCoroutine(TypeLine(lines[index]));
@@ -128,8 +121,6 @@ public class DialogueManager : MonoBehaviour
         if (!isTyping) return;
         if (typingRoutine != null) StopCoroutine(typingRoutine);
         isTyping = false;
-
-        // Instantly reveal the full line
         dialogueText.text = currentPrefix + currentTypedLine;
         if (continueIcon) continueIcon.SetActive(true);
     }
@@ -140,14 +131,6 @@ public class DialogueManager : MonoBehaviour
         {
             dialogueText.text += c;
 
-            // Blip only (optional)
-            if (blipSource && blipClip)
-            {
-                bool shouldBlip = !blipOnlyOnLetters || char.IsLetterOrDigit(c);
-                if (shouldBlip) blipSource.PlayOneShot(blipClip, 1f);
-            }
-
-            // Base delay + punctuation pause
             float delay = typingSpeed;
             if (punctuationChars.IndexOf(c) >= 0) delay += punctuationPause;
             yield return new WaitForSeconds(delay);

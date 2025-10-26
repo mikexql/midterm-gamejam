@@ -13,18 +13,20 @@ public class UIController : MonoBehaviour
     public GameObject mainMenuButton;
 
     [Header("Meters")]
-    public Slider scoreSlider;    // or TMP text if you prefer numbers
-    public Slider trustSlider;    // 0..1
-    public Slider heatSlider;     // 0..heatMax
+    public Slider scoreSlider;
+    public Slider trustSlider;
+    public Slider heatSlider;
+
+    [Header("Round/Event Info")]
     public TextMeshProUGUI roundLabel;
     public TextMeshProUGUI eventTitle;
     public TextMeshProUGUI logText;
-    public GameObject roundSummaryRoot;                 // panel root
 
-    [Header("Choices")]
-    public TMPro.TextMeshProUGUI playerChoiceText;
-    public TMPro.TextMeshProUGUI aiChoiceText;
-    public TMPro.TextMeshProUGUI outcomeText;
+    [Header("Round Summary")]
+    public GameObject roundSummaryRoot;
+    public TextMeshProUGUI playerChoiceText;
+    public TextMeshProUGUI aiChoiceText;
+    public TextMeshProUGUI outcomeText;
 
 
     Action<Choice> _choiceCallback;

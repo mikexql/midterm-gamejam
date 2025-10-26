@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     // State
     int round, score;
-    float aiTrust = 0.5f;   // 0..1, AI's trust in YOU
+    float aiTrust = 0.5f;
     float heat = 0f;
     Choice lastPlayer = Choice.None;
     bool allRoundsCooperated = true;
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         if (!balance) { Debug.LogError("BalanceSO missing."); yield break; }
 
         // Basic slider ranges (if using Sliders)
-        if (ui && ui.scoreSlider) ui.scoreSlider.maxValue = balance.targetScore;
+        if (ui && ui.scoreSlider) ui.scoreSlider.maxValue = balance.targetScoreToEscape;
         if (ui && ui.trustSlider) ui.trustSlider.maxValue = 1f;
         if (ui && ui.heatSlider) ui.heatSlider.maxValue = balance.heatMax;
 
@@ -47,62 +47,47 @@ public class GameManager : MonoBehaviour
             dialogueManager.OnLineSpeaker += portraitHighlighter.SetActiveSpeaker;
             portraitHighlighter.SetAllActive();
             string[] tutorial = {
-                "Detective: Took us long enough to get here. Let's make this quick.",
-                "Detective: The first one to talk gets a deal. I'm not here to play any games, if I don't get what I want, you're both going to the slammer.",
-                "Mafia: Don't let him play you. No one talks and he can't do anything to us.",
-                "Detective: We'll see about that. My patience has limits.",
-                "*TRUST - the thin wire between you and your mafia buddy. The lower it is, the more likely you are to be betrayed.*",
-                "*HEAT - the cop's patience is wearing thin. The longer the both of you stay silent, the closer he gets to tossing you both in a cell.*",
-                "*SCORE - the ticket out. Say just enough, and you can get out of this situation.*",
+                "Detective: How does it feel to be finally caught? It took us a while, but we finally got you two.",
+                "Detective: Here's the deal, both of you are currently looking at 10 years behind bars each.",
+                "Detective: But if you help me, I will help you. Give me enough dirt on your buddy here and you might be able to walk away right after this.",
+                "Mafia: Don't let him play you. No one talks and he can't do anything to us. Remember the family.",
+                "Detective: We'll see about that. I'm sure one of you will crack sooner or later.",
+                "*TRUST - the relationship between you and your mafia buddy. The lower it is, the more likely you are to be betrayed.*",
+                "*HEAT - the detective's patience is wearing thin. The longer the both of you stay silent, the closer he gets to just ending this and tossing the both of you in solitary.*",
+                "*SCORE - the ticket out. Say just enough, and you can reduce your sentence to zero.*",
                 "Each round, choose to *COOPERATE* (stay silent) or *BETRAY* (talk). Each choice affects your TRUST, HEAT, and SCORE.",
-                "Detective: Now, start talking-I don't have all day."
+                "Detective: Now, you both better start talking - I don't have all day."
             };
             yield return ShowDialogueSequence(tutorial);
         }
 
         yield return new WaitForSeconds(0.25f);
 
-        for (round = 1; round <= balance.rounds; round++)
+        for (round = 1; round <= balance.roundsPlayed; round++)
         {
-            ui?.SetRound(round, balance.rounds);
+            ui?.SetRound(round, balance.roundsPlayed);
 
-            // Mid/late passive heat drift
-            if (round >= balance.midgameRound) heat = Mathf.Min(balance.heatMax, heat + balance.heatDriftMidLate);
-
-            var ev = eventSystem ? eventSystem.Draw(deck, round, balance.rounds) : null;
+            // Draw event
+            var ev = eventSystem ? eventSystem.Draw(deck, round, balance.roundsPlayed) : null;
             ui?.ShowEvent(ev);
 
-            // --- NEW: Optional event flavor dialogue at certain rounds ---
-            if (dialogueManager && dialogueCanvas && (round == 3 || round == 7))
-            {
-                string[] eventLines = {
-                    "Detective: The lights flicker. Thin walls, thicker lies.",
-                    "You: You first."
-                };
-                yield return ShowDialogueSequence(eventLines);
-            }
-
-            // Wait for player choice
+            // Player decides
             yield return ui.WaitForChoice(c => lastPlayer = c);
-
             if (lastPlayer != Choice.C)
                 allRoundsCooperated = false;
 
             // AI decides
             var aiChoice = ai ? ai.Decide(lastPlayer, aiTrust, heat, ev) : Choice.C;
 
-            // Resolve
             var result = resolver.Resolve(lastPlayer, aiChoice, ev, balance);
             score += result.scoreDelta;
             aiTrust = Mathf.Clamp01(aiTrust + result.aiTrustDelta);
             heat = Mathf.Clamp(heat + result.heatDelta, 0, balance.heatMax);
 
             yield return ShowRoundSummary(lastPlayer, aiChoice, result);
-
             ui?.ShowOutcome(lastPlayer, aiChoice, result);
             ui?.UpdateMeters(score, aiTrust, heat, balance);
 
-            // --- NEW: Quick reaction dialogue based on outcome ---
             if (dialogueManager && dialogueCanvas)
             {
                 string[] reaction = BuildReactionLines(lastPlayer, aiChoice, aiTrust, heat);
@@ -115,13 +100,11 @@ public class GameManager : MonoBehaviour
         }
 
         // Ending
-        bool secretOK = allRoundsCooperated && round > balance.rounds;
+        bool secretOK = allRoundsCooperated && round > balance.roundsPlayed;
 
         if (secretOK)
         {
-            // Secret sacrifice ending
             ui?.ShowEnding("TAKE_THE_FALL", score, aiTrust, heat);
-
             if (dialogueManager && dialogueCanvas)
             {
                 string[] endLines = {
@@ -129,7 +112,8 @@ public class GameManager : MonoBehaviour
             "You: ...",
             "Detective: (chuckles) Loyalty-funny thing. It's what buries men like you.",
             "You: But our family will continue to thrive. A pity that you won't get what you want.",
-            "Mafia: You did right by the family. We'll handle things from here. Out there, the world keeps turning, but I'll make sure to keep your story straight.",
+            "Mafia: You did right by the family. We'll handle things from here.",
+            "Mafia: Out there, the world keeps turning, but I'll make sure to keep your story straight.",
             "You: Make it count. Anything for the family.",
             "ENDING: TAKE THE FALL"
                 };
@@ -137,13 +121,11 @@ public class GameManager : MonoBehaviour
             }
             ui?.SetChoiceButtonsActive(false);
             ui?.SetMainMenuButtonActive(true);
-            yield break; // stop normal ending flow
+            yield break;
         }
 
         var endingId = resolver.DecideEnding(score, aiTrust, heat, balance, endings);
         ui?.ShowEnding(endingId, score, aiTrust, heat);
-
-        // --- NEW: Ending dialogue ---
 
         if (dialogueManager && dialogueCanvas)
         {
@@ -162,9 +144,9 @@ public class GameManager : MonoBehaviour
             string[][] options = {
             new[] { "Detective: Staying quiet huh, we'll see how long you last."},
             new[] { "Mafia: You played clean. I respect that."},
-            new[] { "Detective: Cooperation... unexpected."},
+            new[] { "Detective: One of you is bound to crack sooner or later."},
             new[] { "Mafia: Guess loyalty ain't dead yet."},
-            new[] { "Detective: Two saints in a sinner's game."}
+            new[] { "Detective: We'll see how long both of you can keep up that act."}
         };
             return options[Random.Range(0, options.Length)];
         }
@@ -176,7 +158,8 @@ public class GameManager : MonoBehaviour
             new[] { "Detective: Smart move. You talked."},
             new[] { "Mafia: You just made an enemy." },
             new[] { "Detective: Cold move, kid."},
-            new[] { "Mafia: I should've known you'd sell me out."}
+            new[] { "Mafia: I should've known you'd sell me out." },
+            new[] { "Detective: Oh? How interesting. Tell me more." }
         };
             return options[Random.Range(0, options.Length)];
         }
@@ -184,21 +167,21 @@ public class GameManager : MonoBehaviour
         if (player == Choice.C && aiChoice == Choice.B)
         {
             string[][] options = {
-            new[] { "Detective: Tough luck. You kept quiet-he didn't." },
-            new[] { "Mafia: Sorry, kid. Had to look out for myself." },
-            new[] { "Mafia: Sorry, kid. Survival's ugly."},
-            new[] { "Mafia: Nothing personal." },
+            new[] { "Detective: Tough luck. Your buddy here sold you out." },
+            new[] { "Mafia: Sorry, I have to look out for myself, our family needs me." },
+            new[] { "Mafia: Sorry, kid. It is what it is."},
+            new[] { "Mafia: Nothing personal, you understand that right?" },
             new[] { "Detective: Should've seen that coming." }
         };
             return options[Random.Range(0, options.Length)];
         }
 
-        // Both betray
         string[][] bothBetray = {
-        new[] { "Mafia: You rat! Thought we had a deal!" },
+        new[] { "Mafia: You rat! I thought we had a deal!" },
         new[] { "Mafia: Should've kept my mouth shut." },
         new[] { "Detective: Two snakes biting each other's tails." },
-        new[] { "Detective: You both sang. Loud and clear." }
+        new[] { "Detective: Now that's more like it." },
+        new[] { "Detective: Hahaha, all that talk about family but you guys are always so quick to turn on each other." }
     };
         return bothBetray[Random.Range(0, bothBetray.Length)];
     }
@@ -206,80 +189,72 @@ public class GameManager : MonoBehaviour
 
     string[] BuildEndingLines(string id)
     {
-        if (id == endings.loyalEscapeId)
-            return new[] {
-                "Detective: Alright, maybe you weren't the bad guy after all.",
-                "You: Took you long enough to see it.",
-                "ENDING: LOYAL ESCAPE"
-            };
+        // if (id == endings.loyalEscapeId)
+        //     return new[] {
+        //         "Detective: Alright, maybe you weren't the bad guy after all.",
+        //         "You: Took you long enough to see it.",
+        //         "ENDING: LOYAL ESCAPE"
+        //     };
 
         if (id == endings.dealId)
             return new[] {
-                "Detective: Hmm, a deal's a deal, the feds will keep you breathing, new name, new city.",
-                "You: Nothing personal.",
+                "Detective: Hmm, a deal's a deal, as thanks for all the evidence, I will see to it that you walk free.",
+                "Detective: The feds will keep you breathing, new name, new city. You will be protected under witness protection as long as you stay clean.",
+                "You: Better me than him, I'm done with this life.",
                 "ENDING: WITNESS DEAL"
             };
 
         if (id == endings.heatBreakId)
             return new[] {
-                "Detective: Looks like I'm not getting anything from you two. We'll see if some time behind bars will change that.",
+                "Detective: Looks like I'm not getting anywhere with you two.",
+                "Detective: We'll see if some extra time rotting behind bars will soften your resolve.",
                 "You: Dammit!",
                 "ENDING: HEAT BREAK"
             };
 
-        // Default / sacrifice
         return new[] {
-            "Detective: Looks like I won't be getting anything else from you two. We'll see if some time behind bars will change that.",
+            "Detective: That's not going to be enough to get you out of here.",
+            "Detective: I want to hear more, but I guess that's all you're willing to give me. It's back to the cell for you two.",
             "You: Dammit!",
-            "ENDING: SACRIFICE"
+            "ENDING: STILL IMPRISONED"
         };
     }
 
-    // Show a dialogue sequence using the dedicated canvas with fades
     IEnumerator ShowDialogueSequence(string[] lines)
     {
         if (!dialogueManager || !dialogueCanvas) yield break;
         ui.SetChoiceButtonsActive(false);
-        // Enable canvas
+
         dialogueCanvas.enabled = true;
 
         dialogueManager.ShowDialogue(lines);
 
-        // Wait for dialogue to finish
         while (dialogueManager.gameObject.activeSelf)
             yield return null;
 
         if (portraitHighlighter) portraitHighlighter.SetAllActive();
 
-        // Disable canvas
         dialogueCanvas.enabled = false;
         ui.SetChoiceButtonsActive(true);
     }
 
     IEnumerator ShowRoundSummary(Choice playerChoice, Choice aiChoice, RoundResult result)
     {
-        // Disable choice buttons during summary
         ui.SetChoiceButtonsActive(false);
 
-        // Tell UI to show a small panel with both choices + result deltas
         ui.ShowRoundSummary(
             ChoiceLabel(playerChoice),
             ChoiceLabel(aiChoice),
             FormatResultDelta(result)
         );
 
-        // Wait for player acknowledge (click or Space/Enter)
         yield return WaitForAcknowledge();
 
-        // Hide the summary UI
         ui.HideRoundSummary();
-
-        // (buttons will be re-enabled later by your normal flow)
     }
 
     IEnumerator WaitForAcknowledge()
     {
-        // small debounce so an earlier click doesn't instantly skip
         yield return null;
 
         while (true)
@@ -288,12 +263,9 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)) break;
             yield return null;
         }
-
-        // optional small delay to avoid accidental double-skip
         yield return null;
     }
 
-    // Tiny format helpers
     string ChoiceLabel(Choice c) => c == Choice.C ? "COOPERATE" :
                                    c == Choice.B ? "BETRAY" : "—";
 
@@ -302,27 +274,20 @@ public class GameManager : MonoBehaviour
         string scoreStr = TrendSymbols(r.scoreDelta, "Score");
         string heatStr = TrendSymbols(r.heatDelta, "Heat");
         string trustStr = TrendSymbols(r.aiTrustDelta, "Trust");
-
-        // Only include ones that changed
         List<string> parts = new List<string>();
         if (!string.IsNullOrEmpty(scoreStr)) parts.Add(scoreStr);
         if (!string.IsNullOrEmpty(heatStr)) parts.Add(heatStr);
         if (!string.IsNullOrEmpty(trustStr)) parts.Add(trustStr);
-
         return string.Join("    ", parts);
     }
     string TrendSymbols(float delta, string label)
     {
-        if (Mathf.Abs(delta) < 0.001f) return ""; // no visible change
+        if (Mathf.Abs(delta) < 0.001f) return "";
 
-        // Map magnitude to 1–3 symbols for effect
         int symbols = Mathf.Clamp(Mathf.CeilToInt(Mathf.Abs(delta) * 3f), 1, 3);
         string sign = delta > 0 ? "+" : "-";
         string text = new string(sign[0], symbols);
-
-        // TMP color tags (green for +, red for -)
         string color = delta > 0 ? "#00FF66" : "#FF4444";
-
         return $"<color={color}>{label} {text}</color>";
     }
 }

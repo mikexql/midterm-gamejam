@@ -2,21 +2,38 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour
 {
-    int consecBetray = 0;
+    public BalanceSO balance;
 
-    public Choice Decide(Choice lastPlayer, float aiTrust, float heat, EventSO ev)
+    // Player choice is currently ignored but could be used next time
+    public Choice Decide(Choice _ignored, float aiTrust, float heat, EventSO ev)
+        => Decide(aiTrust, heat, ev);
+
+    public Choice Decide(float aiTrust, float heat, EventSO ev)
     {
-        float p = 0.3f;                       // base betray
-        if (lastPlayer == Choice.B) p += 0.25f;  // you burned them
-        if (aiTrust > 0.75f) p -= 0.15f;  // high trust = less likely to betray
-        if (aiTrust < 0.30f) p += 0.20f;  // they don't trust you
-        if (heat > 5f) p += 0.10f;  // outside pressure
-        p += ev ? ev.aiBetrayBias : 0f;         // event sway
-        if (consecBetray >= 2) p -= 0.10f;  // remorse flicker
+        if (!balance)
+        {
+            Debug.LogWarning("AIController: BalanceSO missing. Using defaults.");
+            return (Random.value < 0.5f) ? Choice.B : Choice.C;
+        }
+
+        float p = balance.aiBaseBetray;
+
+        // TRUST (0.5 = neutral), higher trust lowers betrayal
+        float t = Mathf.Clamp((aiTrust - 0.5f) / 0.5f, -1f, 1f);
+        p += -balance.aiTrustWeight * t;
+
+        // HEAT, higher heat also raises betrayal of AI
+        float neutralFrac = balance.heatBetrayStartingPoint;
+        float heatFrac = (balance.heatMax > 0f) ? Mathf.Clamp01(heat / balance.heatMax) : 0.5f;
+        float h = Mathf.Clamp((heatFrac - neutralFrac) / 0.5f, -1f, 1f);
+        p += balance.aiHeatWeight * h;
+
+        // Event bias
+        if (ev) p += ev.aiBetrayBias;
 
         p = Mathf.Clamp(p, 0.1f, 0.9f);
-        bool betray = Random.value < p;
-        consecBetray = betray ? consecBetray + 1 : 0;
-        return betray ? Choice.B : Choice.C;
+
+        return (Random.value < p) ? Choice.B : Choice.C;
     }
 }
+

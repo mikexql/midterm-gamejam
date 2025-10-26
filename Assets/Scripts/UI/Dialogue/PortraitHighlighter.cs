@@ -7,8 +7,8 @@ public class PortraitHighlighter : MonoBehaviour
     [System.Serializable]
     public class Slot
     {
-        public string speaker;                 // e.g. "Detective", "You", "Mafia"
-        public List<SpriteRenderer> sprites;   // ALL renderers that form this portrait
+        public string speaker;
+        public List<SpriteRenderer> sprites;
     }
 
     public List<Slot> slots = new();
@@ -29,7 +29,7 @@ public class PortraitHighlighter : MonoBehaviour
             {
                 if (!sr) continue;
                 map[s.speaker].Add(sr);
-                sr.color = inactiveTint; // start dim
+                sr.color = inactiveTint;
             }
         }
     }

@@ -3,12 +3,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
-public class MainMenu : MonoBehaviour
+public class ChangeScene : MonoBehaviour
 {
     [Header("Refs")]
-    public AudioSource musicSource;          // assign your menu music source
-    public Image blackOverlay;          // optional black Image with CanvasGroup (start alpha=0)
-    public Button startButton;               // optional: to prevent double clicks
+    public AudioSource musicSource;
+    public Image blackOverlay;
+    public Button startButton;
 
     [Header("Timings")]
     public float audioFadeDuration = 1.0f;
@@ -26,7 +26,6 @@ public class MainMenu : MonoBehaviour
         float startVol = musicSource ? musicSource.volume : 0f;
         Color startColor = blackOverlay.color;
 
-        // fade both image and audio
         while (t < Mathf.Max(audioFadeDuration, imageFadeDuration))
         {
             t += Time.unscaledDeltaTime;
@@ -48,7 +47,6 @@ public class MainMenu : MonoBehaviour
 
         if (musicSource) { musicSource.volume = 0f; musicSource.Stop(); }
 
-        // Load next scene
         SceneManager.LoadScene(sceneName);
     }
 }
