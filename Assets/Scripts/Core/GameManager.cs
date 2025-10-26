@@ -47,16 +47,17 @@ public class GameManager : MonoBehaviour
             dialogueManager.OnLineSpeaker += portraitHighlighter.SetActiveSpeaker;
             portraitHighlighter.SetAllActive();
             string[] tutorial = {
-                "Detective: How does it feel to be finally caught? It took us a while, but we finally got you two.",
-                "Detective: Here's the deal, both of you are currently looking at 10 years behind bars each.",
-                "Detective: But if you help me, I will help you. Give me enough dirt on your buddy here and you might be able to walk away right after this.",
+                "Detective: How does it feel to be finally caught? It took us a while, but here you are, sharing one cold room.",
+                "Detective: Here's this is going to work. Right now, you're both looking at 20 years each.",
+                "Detective: No deals, no mercy - unless one of you talks. Give me enough dirt on your buddy here and you might be able to walk.",
                 "Mafia: Don't let him play you. No one talks and he can't do anything to us. Remember the family.",
                 "Detective: We'll see about that. I'm sure one of you will crack sooner or later.",
-                "*TRUST - the relationship between you and your mafia buddy. The lower it is, the more likely you are to be betrayed.*",
+                "*Each round, choose to *COOPERATE* (stay silent) or *BETRAY* (talk). Each choice affects your TRUST and SCORE.*",
+                "*TRUST - That's how much your partner still believes in you. If its higher, he is more likely to cooperate. Lose it, and he'll start talking first.*",
                 //"*HEAT - the detective's patience is wearing thin. The longer the both of you stay silent, the closer he gets to just ending this and tossing the both of you in solitary.*",
-                "*SCORE - the ticket out. You need to say just enough to reduce your sentence to zero.*",
-                "Each round, choose to *COOPERATE* (stay silent) or *BETRAY* (talk). Each choice affects your TRUST and SCORE.",
-                "Detective: Now, you both better start talking - I don't have all day."
+                "*SCORE - That's your shot at freedom. Max it out, and you walk out of here clean.*",
+                "*Think carefully each round. Betray too much, you'll lose trust. Cooperate too much, you'll never earn your freedom.*",
+                "Detective: Keep your silence and you're both going to rot in here. You can't win just by playing nice."
             };
             yield return ShowDialogueSequence(tutorial);
         }
@@ -108,14 +109,14 @@ public class GameManager : MonoBehaviour
             if (dialogueManager && dialogueCanvas)
             {
                 string[] endLines = {
-            "Detective: So, you're really gonna take the fall for him?",
-            "You: ...",
-            "Detective: (chuckles) Loyalty-funny thing. It's what buries men like you.",
-            "You: But our family will continue to thrive. A pity that you won't get what you want.",
-            "Mafia: You did right by the family. We'll handle things from here.",
-            "Mafia: Out there, the world keeps turning, but I'll make sure to keep your story straight.",
-            "You: Make it count. Anything for the family.",
-            "ENDING: TAKE THE FALL"
+            "Detective: So, you're really not going to say anything huh?",
+            "You: I'll never talk. In fact, this entire thing is on me, take me in and let my partner go.",
+            "Detective: (chuckles) Loyalty - funny thing. It's what what gets men like you buried and forgotten.",
+            "You: Maybe. But our family will continue to thrive. A pity that you won't get what you want.",
+            "Mafia: You didn't have to do this, brother... but you did. I'll handle everything on the outside for you.",
+            "Mafia: The streets will remember who kept the code. I'll make sure of it.",
+            "You: Make it count. Anything for our family.",
+            "TRUE ENDING: TAKE THE FALL"
                 };
                 yield return ShowDialogueSequence(endLines);
             }
@@ -214,9 +215,9 @@ public class GameManager : MonoBehaviour
 
         return new[] {
             "Detective: That's not going to be enough to get you out of here.",
-            "Detective: I want to hear more, but I guess that's all you're willing to give me. It's back to the cell for you two.",
+            "Detective: I want to hear more, but I guess that's all you're willing to give me. It's back to the cells for you two.",
             "You: Dammit!",
-            "ENDING: STILL IMPRISONED"
+            "BAD ENDING: STILL IMPRISONED"
         };
     }
 
