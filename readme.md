@@ -2,7 +2,9 @@
 # **Game Title**
 
 ## **Code of Silence**
-_(Add some screenshots here showcasing your game)_
+![Dialogue](Pictures/dialogue.png)
+![Choice](Pictures/choice.png)
+![Round Outcome](Pictures/roundOutcome.png)
 
 ## **How to Run**
 
@@ -12,7 +14,7 @@ _(Add some screenshots here showcasing your game)_
 
 ### Gameplay Recording
 
-You should provide a link to your **Full gameplay recording** showing mechanics, UI/UX, and polish. _(A complete playthrough is required.)_ here.
+https://youtu.be/Q7ybpZccwC0
 
 ## Chosen Theme
 
