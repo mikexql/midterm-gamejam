@@ -8,9 +8,9 @@
 
 ## **How to Run**
 
-- System requirements: Windows, Mouse and Keyboard Controls
+- System requirements: Windows 64-bit, Mouse and Keyboard Controls
 - Unity Version: 6000.2.6f2
-- **Executable file** of the game to download
+- [**Executable file** of the game to download](https://github.com/50033-game-design-and-development/midterm-game-jam-2025-fall-mikexql/releases/tag/Game)
 
 ### Gameplay Recording
 
@@ -18,7 +18,7 @@ https://youtu.be/Q7ybpZccwC0
 
 ## Chosen Theme
 
-**Honor Died on the Beach**
+### "**Honor Died on the Beach**"
 
 ## Game Description
 
